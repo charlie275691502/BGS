@@ -100,7 +100,7 @@ public class NetworkController : MonoBehaviour {
 					gameController.Start_Dialog (null, "Error", "Disconnected from server.", 1);
 				}
 			}
-			yield return new WaitForSeconds(0.5f);
+			yield return new WaitForSeconds(1);
 		}
 	}
 

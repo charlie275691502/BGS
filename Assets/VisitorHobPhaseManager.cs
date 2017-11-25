@@ -23,7 +23,7 @@ public class VisitorHobPhaseManager : MonoBehaviour {
 	void OnEnable(){
 		onReceive = false;
 		waitingRoomHandlers = new List<WaitingRoomHandler> ();
-		serverReceiveIndex = networkController.AddSubscriptor (new Subscriptor(OnReceive, new Command[1]{Command.M2C_HOB}));
+		serverReceiveIndex = networkController.AddSubscriptor (new Subscriptor(OnReceive, new Command[3]{Command.M2C_HOB, Command.M2C_JOIN, Command.M2C_CREATE}));
 		change_Hob ();
 	}
 	void OnDisable () {
@@ -62,6 +62,12 @@ public class VisitorHobPhaseManager : MonoBehaviour {
 		case Command.M2C_HOB:
 			M2C_HOB (packet);
 			break;
+		case Command.M2C_CREATE:
+			M2C_CREATE (packet);
+			break;
+		case Command.M2C_JOIN:
+			M2C_JOIN (packet);
+			break;
 		default:
 			break;
 		}
@@ -71,6 +77,16 @@ public class VisitorHobPhaseManager : MonoBehaviour {
 		gameController.hob_String = packet.s_datas [0];	
 		change_Hob ();
 	}
+
+	void M2C_CREATE(Packet packet){
+		if(packet.datas[0] == 1)gameController.Change_Phase (Phase.RoomWaitingPhase);
+	}
+
+	void M2C_JOIN(Packet packet){
+		if(packet.datas[0] == 1)gameController.Change_Phase (Phase.RoomWaitingPhase);
+	}
+
+
 
 	// ------------- end of receive data ------------- //
 
@@ -93,7 +109,6 @@ public class VisitorHobPhaseManager : MonoBehaviour {
 			wrh.room_string = struct_string [i];
 			waitingRoomHandlers.Add (wrh);
 		}
-		Debug.Log(struct_string.Length);
 		if(createRoomHandler != null)Destroy (createRoomHandler.gameObject);
 		createRoomHandler = Instantiate (createRoom_Prefab, Vector3.zero, Quaternion.identity, waitingRoomFolder).GetComponent<CreateRoomHandler>();
 		createRoomHandler.gameObject.transform.localPosition = new Vector3 (0, (2 - struct_string.Length) * waitingRoomDistance, 0);
