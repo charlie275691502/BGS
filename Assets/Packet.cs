@@ -238,7 +238,7 @@ public class Packet{
 		case Command.C2M_VISIT:			return new Data_Type[1]{Data_Type.String};
 		case Command.C2M_CREATE:		return new Data_Type[3]{Data_Type.String, Data_Type.String, Data_Type.Byte};
 		case Command.C2M_JOIN:			return new Data_Type[1]{Data_Type.String};
-		case Command.C2M_ROOM:			return new Data_Type[1]{Data_Type.String};
+		case Command.C2M_ROOM:			return new Data_Type[0];
 		case Command.C2M_PING:			return new Data_Type[0];
 
 		case Command.M2C_HOB:			return new Data_Type[1]{Data_Type.String};
