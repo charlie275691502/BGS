@@ -1645,8 +1645,7 @@ MonoBehaviour:
   visitorsList_text: {fileID: 968057333}
   waitingRoomHandlers: []
   createRoomHandler: {fileID: 0}
-  waitingRoomFolder: {fileID: 4467664404855908, guid: 3ee0665e3fc7a460e9e757dbcb25c1e0,
-    type: 2}
+  waitingRoomFolder: {fileID: 865404955}
   waitingRoom_Prefab: {fileID: 1446563548444042, guid: 3ee0665e3fc7a460e9e757dbcb25c1e0,
     type: 2}
   createRoom_Prefab: {fileID: 1733793142925746, guid: e3959a7ccf6624288ade3ef68045facd,

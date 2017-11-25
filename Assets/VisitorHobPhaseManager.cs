@@ -88,11 +88,15 @@ public class VisitorHobPhaseManager : MonoBehaviour {
 		waitingRoomHandlers.Clear ();
 
 		for (int i = 1; i < struct_string.Length; i++) {
-			WaitingRoomHandler wrh = Instantiate (waitingRoom_Prefab, new Vector3(0, (i-2) * waitingRoomDistance, 0), Quaternion.identity, waitingRoomFolder).GetComponent<WaitingRoomHandler>();
+			WaitingRoomHandler wrh = Instantiate (waitingRoom_Prefab, Vector3.zero, Quaternion.identity, waitingRoomFolder).GetComponent<WaitingRoomHandler>();
+			wrh.gameObject.transform.localPosition = new Vector3(0, (2-i) * waitingRoomDistance, 0);
 			wrh.room_string = struct_string [i];
 			waitingRoomHandlers.Add (wrh);
 		}
-		createRoomHandler = Instantiate (createRoom_Prefab, new Vector3(0, (struct_string.Length-2) * waitingRoomDistance, 0), Quaternion.identity, waitingRoomFolder).GetComponent<CreateRoomHandler>();
+		Debug.Log(struct_string.Length);
+		if(createRoomHandler != null)Destroy (createRoomHandler.gameObject);
+		createRoomHandler = Instantiate (createRoom_Prefab, Vector3.zero, Quaternion.identity, waitingRoomFolder).GetComponent<CreateRoomHandler>();
+		createRoomHandler.gameObject.transform.localPosition = new Vector3 (0, (2 - struct_string.Length) * waitingRoomDistance, 0);
 	}
 
 	public void Create_Room(string room_Name, string room_Description, int max_Player){
