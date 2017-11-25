@@ -8,7 +8,7 @@ using System.Net.Sockets;
 using System.IO;
 
 public class NetworkController : MonoBehaviour {
-	private string serverIp = "140.112.253.207";
+	private string serverIp = "140.112.251.122";
 	private int serverPort = 6805;
 	public GameController gameController;
 

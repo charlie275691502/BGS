@@ -71,7 +71,7 @@ public class RoomWaitingPhaseManager : MonoBehaviour {
 
 		string member_list = "";
 		for (int i = 2; i < struct_string.Length; i++) {
-			member_list = struct_string [i] + "\n";
+			member_list += struct_string [i] + "\n";
 		}
 		roomList_text.text = member_list;
 	}
