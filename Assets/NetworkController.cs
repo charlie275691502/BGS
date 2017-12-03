@@ -8,8 +8,6 @@ using System.Net.Sockets;
 using System.IO;
 
 public class NetworkController : MonoBehaviour {
-	private string serverIp = "140.112.251.122";
-	private int serverPort = 6805;
 	public GameController gameController;
 
 	private Socket _clientSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
@@ -19,8 +17,7 @@ public class NetworkController : MonoBehaviour {
 	private List<Subscriptor> subscriptors = new List<Subscriptor> {};
 
 	void Start () {
-		StartConnection(serverIp, serverPort);
-		StartCoroutine (Start_Ping ());
+//		StartCoroutine (Start_Ping ());
 		AddSubscriptor (new Subscriptor (OnReceive, new Command[1]{ Command.M2C_PING }));
 	}
 
@@ -46,7 +43,7 @@ public class NetworkController : MonoBehaviour {
 		}
 	}
 	public void SendToServer(Packet packet) {
-		if (packet.command != Command.C2M_PING || !hide_ping_msg)packet.Print ("SEND");
+		if (packet.command != Command.C2M_PONG || !hide_ping_msg)packet.Print ("SEND");
 
 		byte[] data = packet.b_datas;
 		try
@@ -82,7 +79,7 @@ public class NetworkController : MonoBehaviour {
 	public void AnalysisReceive(Packet packet){
 		switch (packet.command) {
 		case Command.M2C_PING:
-			ping_time = 0;
+			SendToServer (new Packet (Command.C2M_PONG));
 			break;
 		default:
 			break;
@@ -92,10 +89,10 @@ public class NetworkController : MonoBehaviour {
 	bool is_connect = false;
 	int ping_time = 0;
 	IEnumerator Start_Ping(){
-		Packet ping = new Packet (Command.C2M_PING);
+//		Packet ping = new Packet (Command.C2M_PING);
 		while(true){
 			if (is_connect) {
-				SendToServer (ping);
+//				SendToServer (ping);
 				if (++ping_time >= 3) {
 					gameController.Start_Dialog (null, "Error", "Disconnected from server.", 1);
 				}
@@ -115,7 +112,7 @@ public class NetworkController : MonoBehaviour {
 		byte[] recData = new byte[recieved];
 		Buffer.BlockCopy(_recieveBuffer,0,recData,0,recieved);
 		Packet packet = new Packet(recData);
-		if (packet.command != Command.M2C_PING || !hide_ping_msg)packet.Print ("RECEIVED");
+		if ((packet.command != Command.M2C_PING && packet.command != Command.M2C_PING_VALUE)|| !hide_ping_msg)packet.Print ("RECEIVED");
 
 		// Notify other managers when receiving data from server
 		foreach (Subscriptor subscriptor in subscriptors) {

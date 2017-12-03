@@ -5,44 +5,40 @@ using UnityEngine.UI;
 
 public enum Phase{
 	UnsignedPhase,
+	ConnectSetupPhase,
 	EnterNamePhase,
-	VisitorHobPhase,
 	RoomWaitingPhase
 }
 
 public class GameController : MonoBehaviour {
 	public NetworkController networkController;
 
+	public ConnectSetupPhaseManager connectSetupPhaseManager;
 	public EnterNamePhaseManager enterNamePhaseManager;
-	public VisitorHobPhaseManager visitorHobPhaseManager;
 	public RoomWaitingPhaseManager roomWaitingPhaseManager;
 
 	public Phase nowPhase;
 	public bool phase_has_change;
 
-	public string hob_String;
+	public string room_String;
 
 	public bool has_dialog;
 	public GameObject dialog_gmo;
 
 	void Start(){
 		phase_has_change = false;
-//		if (PlayerPrefs.GetString ("NickName") == "") {
-			Change_Phase (Phase.EnterNamePhase);
-//		} else {
-//		}
-
+		Change_Phase (Phase.ConnectSetupPhase);
 	}
 
 	void Update(){
 		if (phase_has_change) {
 			phase_has_change = false;
 
+			connectSetupPhaseManager.gameObject.SetActive (false);
 			enterNamePhaseManager.gameObject.SetActive (false);
-			visitorHobPhaseManager.gameObject.SetActive (false);
 			roomWaitingPhaseManager.gameObject.SetActive (false);
+			if(nowPhase == Phase.ConnectSetupPhase)connectSetupPhaseManager.gameObject.SetActive (true);
 			if(nowPhase == Phase.EnterNamePhase)enterNamePhaseManager.gameObject.SetActive (true);
-			if(nowPhase == Phase.VisitorHobPhase)visitorHobPhaseManager.gameObject.SetActive (true);
 			if(nowPhase == Phase.RoomWaitingPhase)roomWaitingPhaseManager.gameObject.SetActive (true);
 		}
 	}
